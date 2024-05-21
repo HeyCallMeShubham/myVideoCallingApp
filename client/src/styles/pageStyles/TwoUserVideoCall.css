@@ -1,0 +1,239 @@
+.main-peer-to-peer-calls-container {
+
+ 
+
+   width: 100vw;
+
+   height: 100vh;
+
+   display: flex;
+
+   justify-content: center;
+
+   align-items: center;
+
+   text-align: center;
+
+}
+
+
+
+.main-peer-to-peer-calls-container .video-conversation-container {
+
+   width: 30rem;
+
+   height: 100%;
+
+   position: relative;
+
+   border: solid 1px black; 
+
+   display: flex;
+
+   flex-direction: column;
+
+   justify-content: space-between;
+
+
+}
+
+
+
+.main-peer-to-peer-calls-container .video-conversation-container .video-container {
+
+   width: 100%;
+
+   height: 50%;
+
+   background-color: rgb(0, 15, 186);
+
+}
+
+
+
+
+.main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer {
+
+   position: absolute;
+
+   left: 0;
+
+   right: 0;
+
+   bottom: 2rem;
+
+   margin: 0 auto;
+
+   width: 100%;
+
+   height: 6rem;
+
+   text-align: center;
+
+   align-items: center;
+
+   display: flex;
+
+   justify-content: space-around;
+
+}
+
+
+
+.main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer .endCallIcon {
+
+   color: red;
+
+   width: 5rem;
+
+   height: 5rem;
+
+}
+
+
+
+.main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer .clickableIcon {
+
+   width: 1.5rem;
+
+   height: 1.5rem;
+
+}
+
+
+
+@media (min-width:300px) and (max-width:600px) {
+
+
+   .main-peer-to-peer-calls-container {
+
+      background-color: red;
+
+      width: 100vw;
+
+      height: 100vh;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      text-align: center;
+
+   }
+
+
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container {
+
+      width: 100%;
+
+      height: 100%;
+
+      position: relative;
+
+      background-color: aqua;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+
+   }
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container .local-video-container {
+
+      position: absolute;
+
+      z-index: 1;
+
+      width: 110px;
+
+      height: 120px;
+
+      right: 0;
+
+      border: solid 2px rgb(79, 78, 78);
+
+   }
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container .remote-video-container {
+
+      position: absolute;
+
+      width: 100%;
+
+      height: 100%;
+
+   }
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer .endCallIcon {
+
+      color:white;
+
+      background-color: red;
+
+      border: solid 1px black;
+
+      padding: 0.50rem;
+
+      border-radius: 50%;
+
+      width: 2.8rem;
+
+      height: 2.8rem;
+
+   }
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer .clickableIcon {
+
+      width: 1.2rem;
+
+      height: 1.2rem;
+
+   }
+
+
+
+   .main-peer-to-peer-calls-container .video-conversation-container .otherOptionsContainer {
+
+      position: absolute;
+
+      left: 0;
+
+      right: 0;
+
+      bottom: 1.8rem;
+
+      margin: 0 auto;
+
+      width: 100%;
+
+      height: 6rem;
+
+      text-align: center;
+
+      align-items: center;
+
+      display: flex;
+
+      justify-content: space-around;
+
+   }
+
+
+
+}

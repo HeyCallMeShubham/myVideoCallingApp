@@ -1,0 +1,106 @@
+.group-video-call-main-page {
+
+    height: 99.5%;
+
+    width: 100%;
+
+    display: grid;
+
+    margin: 0;
+
+    gap: 1px;
+
+    grid-template-columns: repeat(auto-fit, minmax(10rem, auto));
+
+    grid-template-rows: repeat(auto-fit, minmax(2rem, auto));
+
+    justify-content: center;
+
+}
+
+
+
+.group-video-call-main-page .streamAndReportRemoveMuteUserOptsContainer {
+
+    position: relative;
+
+    height: 100%;
+
+    width: 100%;
+
+}
+
+
+ 
+
+.group-video-call-main-page .streamAndReportRemoveMuteUserOptsContainer .videoSharerName {
+
+  display: none;
+
+
+}
+
+
+
+.group-video-call-main-page .streamAndReportRemoveMuteUserOptsContainer:hover .videoSharerName, .videoSharerName:hover {
+
+    display: block;
+
+   position: absolute;
+
+   top: 0;
+
+   left:10px;
+
+   font-weight:bold;
+
+   font-size:20px;
+
+
+}
+
+
+ 
+
+.group-video-call-main-page .streamAndReportRemoveMuteUserOptsContainer .options-container {
+
+    display: none;
+
+
+  
+}
+
+
+
+.group-video-call-main-page .streamAndReportRemoveMuteUserOptsContainer:hover .options-container,
+.options-container:hover {
+
+    display: flex;
+
+    justify-content: space-around;
+
+    position: absolute;
+
+    width: 100%;
+
+    padding: 0;
+
+    bottom: 4%;
+
+}
+
+
+
+.group-video-call-main-page .reportRemoveMuteUserOptsContainer .options-container .clickableIcon {
+
+    font-size: 1.3rem;
+
+}
+
+
+
+.group-video-call-main-page .reportRemoveMuteUserOptsContainer .options-container .crossRemoveUserIcon:hover {
+
+    font-size: 1.5rem;
+
+}
