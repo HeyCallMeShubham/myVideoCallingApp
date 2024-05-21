@@ -14,6 +14,14 @@
 
 
 
+.meetingOptionsMainDiv .meetiongOptionMobileHeader {
+
+    display: none;
+
+}
+
+
+
 .meetingOptionsMainDiv .meetingOptionsMainDivChildOne {
 
 
@@ -28,6 +36,8 @@
     grid-row-start: 1;
 
     grid-row-end: 1;
+
+    overflow-y: scroll;
 
 
 }
@@ -92,6 +102,123 @@
 
     grid-row: 1/3;
 
+}
+
+
+
+
+
+
+
+@media (min-width:300px) and (max-width:500px) {
+
+    .meetingOptionsMainDiv .meetingOptionsMainDivChildThree {
+
+        display: none;
+
+    }
+
+
+    .meetingOptionsMainDiv {
+
+        width: 100vw;
+
+        height: 100vh;
+
+        display: grid;
+
+        grid-template-columns: auto;
+
+        grid-template-rows: 2rem auto 4rem;
+
+    }
+
+
+
+    .meetingOptionsMainDiv .meetingOptionsMainDivChildOne{
+
+  
+ 
+
+        overflow-y: scroll;
+
+    }
+
+
+
+    .meetingOptionsMainDiv .meetiongOptionMobileHeader {
+
+        height: 100%;
+
+        width: 100%;
+
+        grid-column-start: 2;
+        grid-column-end: 2;
+
+        grid-row-start: 1;
+        grid-row-end: 1;
+
+        justify-content: center;
+
+        align-items: center;
+
+        text-align: center;
+
+        display: flex;
+    
+    }
+    
+    
+
+    .meetingOptionsMainDiv .meetingOptionsMainDivChildOne {
+
+
+        height: 100%;
+
+        width: 100%;
+
+        grid-column-start: 2;
+
+        grid-column-end: 2;
+
+        grid-row-start: 2;
+
+        grid-row-end: 2;
+
+
+    }
+
+
+
+
+
+    .meetingOptionsMainDiv .meetingOptionsMainDivChildTwo {
+
+
+        width: 100%;
+
+        height: 100%;
+
+        grid-column-start: 2;
+
+        grid-column-end: 2;
+
+        grid-row-start: 3;
+
+        grid-row-end: 3;
+
+        background-color: rgb(0, 255, 76);
+
+        display: flex;
+
+        justify-content: space-around;
+
+        align-items: center;
+
+        text-align: center;
+
+
+    }
 
 
 }

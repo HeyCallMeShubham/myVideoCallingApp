@@ -25,11 +25,9 @@ const GroupVideoCallPage = () => {
 
         setAudioMute(false);
 
-
       } else {
 
         setAudioMute(true);
-
 
       }
 
@@ -71,14 +69,1070 @@ const GroupVideoCallPage = () => {
         </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
 
 
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
  
 
 
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
 
 
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
 
 
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
 
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+
+        <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
+
+          <p className='videoSharerName'>shubham</p>
+
+          <div className='options-container'>
+
+            <HiDotsVertical className='otherOptionIcon  clickableIcon ' />
+
+            <RxCross2 className='crossRemoveUserIcon clickableIcon' />
+
+            {audioMute ? <VscMute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} /> : <VscUnmute className="audioIcon clickableIcon " onClick={() => muteUnMuteAudio()} />}
+
+          </div>
+
+          <RemoteStream />
+
+        </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
+
+ 
+ 
 
       </div>
 
