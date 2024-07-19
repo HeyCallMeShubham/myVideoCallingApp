@@ -1,25 +1,48 @@
 
 import React, { MutableRefObject, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 
-const RemoteStream = () => {
+const RemoteStream = (stream: any) => {
 
 
-    const remoteStreamVideo = useRef<HTMLVideoElement | null>(null);
+    const streams = useSelector((state: any) => state.streams);
 
+
+    useEffect(() => {
+
+        console.log(streams.remoteStream, 'srrre');
+
+    }, [streams.remoteStream]);
+
+
+    const remoteStreamVideo: any = useRef<HTMLVideoElement | null>(null);
+
+    
+    useEffect(() => {
+
+        if (streams.remoteStream) {
+
+            remoteStreamVideo.current.srcObject = streams.remoteStream?.stream
+
+        }
+
+    }, [streams.remoteStream]);
 
 
     const getUserMedia = async () => {
 
         try {
-
+            {/*
+            
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-
+            
             if (remoteStreamVideo.current) {
 
                 remoteStreamVideo.current.srcObject = mediaStream
             }
 
+        */}
 
         } catch (err) {
 
@@ -36,6 +59,8 @@ const RemoteStream = () => {
         getUserMedia();
 
     }, []);
+
+
 
 
 

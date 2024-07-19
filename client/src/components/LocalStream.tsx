@@ -1,22 +1,23 @@
 import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux';
 
 const LocalStream = () => {
 
-  const localStreamVideo = useRef<HTMLVideoElement | null>(null);
+
+  const streams = useSelector((state: any) => state.streams)
 
 
 
-  const getUserMedia = async () => {
+
+  const localStreamVideo: any = useRef<HTMLVideoElement | null>(null);
+
+  const playStream = () => {
+
+
 
     try {
 
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-
-      if (localStreamVideo.current) {
-
-        localStreamVideo.current.srcObject = mediaStream
-      }
-
+      localStreamVideo.current.srcObject = streams.localStream.stream
 
     } catch (err) {
 
@@ -26,13 +27,20 @@ const LocalStream = () => {
 
   }
 
-
-
+  
+  
   useEffect(() => {
 
-    getUserMedia();
+    if (streams.localStream !== null || streams.localStream?.stream) {
 
-  }, []);
+      playStream()
+
+    }
+
+  }, [streams]);
+
+
+
 
 
   return (

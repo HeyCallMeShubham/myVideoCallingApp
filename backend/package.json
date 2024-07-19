@@ -5,22 +5,34 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
-    "start":"node ./dist/index.js",
-    "dev":"npm run build && nodemon ./dist/index.js"
-     
+    "start": "node ./dist/index.js",
+    "dev": "npm run build && nodemon ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "express": "^4.19.2"
+    "@types/socket.io": "^3.0.2",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ls": "^0.2.1",
+    "mediasoup": "^3.14.8",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@types/nodemon": "^1.19.6",
     "@types/typescript": "^2.0.0",
+    "@types/wrtc": "npm:@shynome/types__wrtc@^0.0.4",
+    "node-pre-gyp": "^0.17.0",
     "nodemon": "^3.1.0",
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "wrtc": "^0.4.7"
   }
 }

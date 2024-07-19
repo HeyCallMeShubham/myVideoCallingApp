@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../styles/pageStyles/TwoUserVideoCall.css"
 
 import { MdCallEnd } from "react-icons/md";
@@ -10,10 +10,27 @@ import RemoteStream from '../components/RemoteStream';
 import { VscUnmute } from "react-icons/vsc";
 import { HiDotsVertical } from "react-icons/hi";
 import { VscMute } from "react-icons/vsc";
+import { addStream } from '../features/streamsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPeerConnection } from '../features/peerConnectionSlice';
+import createPeerConnection from '../utils/createPeerConnection';
 
 const TwoUserVideoCall = () => {
 
+
+
+
+  const streams = useSelector((state: any) => state.streams)
+
+  const peerConnection = useSelector((state: any) => state.peerConnection.peerConnection)
+
+
   const [audioMute, setAudioMute] = useState(false);
+
+
+
+  const dispatch = useDispatch();
+
 
 
 
@@ -42,6 +59,104 @@ const TwoUserVideoCall = () => {
     }
 
   }
+
+
+
+
+
+  const getUserMedia = async () => {
+
+    try {
+
+
+
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+
+      dispatch(addStream({ prop: "localStream", value: { stream: stream } }));
+
+      const { remoteStream, peerConnection }: any = await createPeerConnection("addIceCandidates")
+
+      dispatch(addStream({ prop: "remoteStream", value: { stream: remoteStream } }));
+
+      dispatch(addPeerConnection(peerConnection));
+
+
+
+    } catch (err) {
+
+      console.log(err, 'err');
+
+    }
+
+  }
+
+
+  useEffect(() => {
+
+    getUserMedia();
+
+  }, []);
+
+
+  useEffect(() => {
+
+    if (peerConnection) {
+
+      peerConnection.addEventListener("negotiationneeded", (e: any) => {
+
+        console.log('negotiationisworking');
+
+      });
+    }
+
+  }, [peerConnection]);
+
+
+
+
+
+
+
+  const addStreamToPeer = async (e: any) => {
+
+    const localStream = streams.localStream.stream
+
+    try {
+
+
+      localStream.getTracks().forEach((track: any) => {
+
+        peerConnection.addTrack(track, streams.localStream.stream);
+
+      });
+
+
+    } catch (err) {
+
+      console.log(err, 'err');
+
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   return (
