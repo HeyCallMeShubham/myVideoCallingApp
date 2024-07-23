@@ -6,34 +6,34 @@ import { useSelector } from 'react-redux';
 const RemoteStream = (stream: any) => {
 
 
-    const streams = useSelector((state: any) => state.streams);
+    //const streams = useSelector((state: any) => state.streams);
 
 
-    useEffect(() => {
+    ///   useEffect(() => {
 
-        console.log(streams.remoteStream, 'srrre');
+    /// console.log(streams.remoteStream, 'srrre');
 
-    }, [streams.remoteStream]);
+    /// }, [streams.remoteStream]);
 
 
     const remoteStreamVideo: any = useRef<HTMLVideoElement | null>(null);
 
-    
-    useEffect(() => {
 
-        if (streams.remoteStream) {
+    //   useEffect(() => {
 
-            remoteStreamVideo.current.srcObject = streams.remoteStream?.stream
+    /// if (streams.remoteStream) {
 
-        }
+    ///   remoteStreamVideo.current.srcObject = streams.remoteStream?.stream
 
-    }, [streams.remoteStream]);
+    ///  }
+    ///
+    /// }, [streams.remoteStream]);
 
 
-    const getUserMedia = async () => {
+    ///  const getUserMedia = async () => {
 
-        try {
-            {/*
+    ///   try {
+    {/*
             
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
             
@@ -44,23 +44,31 @@ const RemoteStream = (stream: any) => {
 
         */}
 
-        } catch (err) {
+    ///  } catch (err) {
 
-            console.log(err);
+    ///  console.log(err);
 
-        }
+    ///  }
 
-    }
+    ///  }
+
+
+
+    /// useEffect(() => {
+
+    ///getUserMedia();
+
+    ///  }, []);
 
 
 
     useEffect(() => {
 
-        getUserMedia();
+        console.log(stream, 'streamstreamstrean')
 
-    }, []);
+        remoteStreamVideo.current.srcObject = new MediaStream([stream.track])
 
-
+    }, [stream])
 
 
 
