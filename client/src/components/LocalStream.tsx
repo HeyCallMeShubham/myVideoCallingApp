@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux';
 
-const LocalStream = () => {
+const LocalStream = ({ stream }: any) => {
 
 
   const streams = useSelector((state: any) => state.streams)
@@ -27,8 +27,8 @@ const LocalStream = () => {
 
   }
 
-  
-  
+
+
   useEffect(() => {
 
     if (streams.localStream !== null || streams.localStream?.stream) {
@@ -47,7 +47,7 @@ const LocalStream = () => {
 
     <div style={{ width: "100%", height: "100%" }}>
 
-      <video ref={localStreamVideo} playsInline autoPlay style={{ width: "100%", height: "100%", background: "green", objectFit: "fill" }} />
+      <video ref={stream} playsInline autoPlay style={{ width: "100%", height: "100%", background: "green", objectFit: "fill" }} />
 
     </div>
 

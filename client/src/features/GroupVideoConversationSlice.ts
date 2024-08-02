@@ -8,7 +8,7 @@ import type { RootState } from "../app/store"
 import { LuUnderline } from "react-icons/lu"
 
 
-interface IVideoCallStates {
+interface IGroupVideoConversationStates {
 
     from: string | undefined,
     streamTracks: any | undefined,
@@ -28,7 +28,9 @@ interface IVideoCallStates {
 
 }
 
-const initialState: IVideoCallStates = {
+
+
+const initialState: IGroupVideoConversationStates = {
 
     from: undefined,
     streamTracks: [],
@@ -60,9 +62,6 @@ const initialState: IVideoCallStates = {
     },
 
 
-
-
-
 }
 
 
@@ -70,13 +69,14 @@ const initialState: IVideoCallStates = {
 
 
 
-const VideoCallSlice = createSlice({
 
-    name: "videoCallSlice",
+const groupVideoConversationSlice = createSlice({
+
+    name: "groupConversationSlice",
     initialState,
     reducers: {
 
-        setVideoCallState: (state, action: PayloadAction<{ prop: keyof IVideoCallStates; value: any }>) => {
+        setGroupConversationState: (state, action: PayloadAction<{ prop: keyof IGroupVideoConversationStates; value: any }>) => {
 
 
             const { prop, value } = action.payload;
@@ -104,11 +104,11 @@ const VideoCallSlice = createSlice({
 
 
 
-export const { setVideoCallState } = VideoCallSlice.actions;
+export const { setGroupConversationState } = groupVideoConversationSlice.actions;
 
 
 
-export default VideoCallSlice.reducer
+export default groupVideoConversationSlice.reducer
 
 
 

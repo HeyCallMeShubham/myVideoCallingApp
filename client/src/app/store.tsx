@@ -1,14 +1,14 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import peerConnectionSlice from '../features/peerConnectionSlice';
 import streamsSlice from '../features/streamsSlice';
-import  videoCallSlice from '../features/VideoCallSlice';
+import groupVideoConversationSlice from '../features/GroupVideoConversationSlice';
 
 export const store = configureStore({
   reducer: {
 
     peerConnection: peerConnectionSlice,
     streams: streamsSlice,
-    groupVideoCallSlice: videoCallSlice
+    groupVideoConversation: groupVideoConversationSlice
 
   },
 

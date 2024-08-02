@@ -18,30 +18,31 @@ import { addStream } from '../features/streamsSlice';
 import { addPeerConnection } from '../features/peerConnectionSlice';
 import axios from 'axios';
 import { socketConnection } from '../utils/socketConnection';
-import { setVideoCallState } from '../features/VideoCallSlice';
+import { setGroupConversationState } from '../features/GroupVideoConversationSlice';
 import { Socket } from 'socket.io-client';
+import { server } from 'typescript';
 
 
 const GroupVideoCallPage = () => {
 
   const streams = useSelector((state: any) => state.streams)
 
-  const groupVideoCallState = useSelector((state: any) => state.groupVideoCallSlice)
+  const groupVideoConversationState = useSelector((state: any) => state.groupVideoConversation);
 
-  const peerConnection = useSelector((state: any) => state.peerConnection.peerConnection)
+  const peerConnection = useSelector((state: any) => state.peerConnection.peerConnection);
 
   const [audioMute, setAudioMute] = useState(false);
 
 
   const remoteStreamVideo: any = useRef<HTMLVideoElement | null>(null);
 
+  const localStreamVideo: any = useRef<HTMLVideoElement | null>(null);
 
-  const socketIo: Socket | undefined = useMemo(() => socketConnection(), [])
 
+  const socketIo: Socket | undefined = useMemo(() => socketConnection(), []);
 
 
   const dispatch = useDispatch();
-
 
 
   const muteUnMuteAudio = () => {
@@ -71,25 +72,36 @@ const GroupVideoCallPage = () => {
   }
 
 
-  /// sockets login
 
+  /// sockets login
 
 
   useEffect(() => {
 
-    socketIo?.on("connection-successful", ({ socketId }) => {
+    socketIo?.on("connection-success", (socketId: string) => {
 
-      console.log("socketid", socketId);
+      console.log(socketId, 'socketId');
 
       getLocalStream()
 
-    })
+    });
 
 
-    socketIo?.on("new-producer", ({ producerId }) => {
+
+    socketIo?.on("new-producer", ({ producerId }: { producerId: string }) => {
+
+      console.log("new producer id ", producerId)
 
 
-      dispatch(setVideoCallState({ prop: "producerIds", value: producerId }))
+      if (groupVideoConversationState.producerIds.includes(producerId)) {
+
+        console.log('already exists', producerId)
+
+      } else {
+
+        dispatch(setGroupConversationState({ prop: "producerIds", value: producerId }));
+
+      }
 
 
 
@@ -97,41 +109,35 @@ const GroupVideoCallPage = () => {
 
 
 
-
-
-
     return () => {
 
-      socketIo?.off("connection-successful",);
+      socketIo?.off("connection-success");
 
-      socketIo?.off("new-producer",);
+      socketIo?.off("new-producer")
 
     }
-
-
-
-
 
   }, [socketIo]);
 
 
 
-
-
-  const getLocalStream = useCallback(async () => {
+  const getLocalStream = async () => {
 
     try {
 
-      const stream: MediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+      const videoTrack = stream.getVideoTracks()[0];
+
+      const audioTrack = stream.getAudioTracks()[0];
 
 
+      dispatch(setGroupConversationState({ prop: "videoParams", value: { track: videoTrack, ...groupVideoConversationState.videoParams } }));
 
-      const audioParams: MediaStreamTrack = { track: stream.getAudioTracks()[0], ...groupVideoCallState.audioParams };
-      const videoParams: MediaStreamTrack = { track: stream.getVideoTracks()[0], ...groupVideoCallState.videoParams };
+      dispatch(setGroupConversationState({ prop: "audioParams", value: { track: audioTrack, ...groupVideoConversationState.audioParams } }));
 
-      dispatch(setVideoCallState({ prop: "audioParams", value: audioParams }));
 
-      dispatch(setVideoCallState({ prop: "videoParams", value: videoParams }));
+      localStreamVideo.current.srcObject = stream
 
 
       joinRoom();
@@ -142,50 +148,48 @@ const GroupVideoCallPage = () => {
 
     }
 
-  }, [])
+  }
 
 
 
 
-  const joinRoom = async () => {
+
+
+  const joinRoom = useCallback(async () => {
 
     try {
 
-      socketIo?.emit("joinRoom", { roomName: "trpleh" }, ({ rtpCapabilities }: any) => {
+      socketIo?.emit("joinRoom", { roomName: "demoRoom" }, ({ rtpCapabilities }: { rtpCapabilities: mediasoupTypes.RtpCapabilities }) => {
 
         createDevice(rtpCapabilities);
 
       });
 
+
     } catch (err) {
 
       console.log(err);
 
     }
 
-  }
+  }, []);
 
 
 
-
-
-
-
-  const createDevice = async (routerRtpCapabilities: mediasoupTypes.RtpCapabilities) => {
+  const createDevice = useCallback(async (routerRtpCapabilities: mediasoupTypes.RtpCapabilities) => {
 
     try {
 
       const device = new mediasoupClient.Device();
 
-
       await device.load({
+
         routerRtpCapabilities
+
       });
 
 
-      dispatch(setVideoCallState({ prop: "device", value: device }));
-
-
+      dispatch(setGroupConversationState({ prop: "device", value: device }));
 
 
     } catch (err) {
@@ -194,87 +198,64 @@ const GroupVideoCallPage = () => {
 
     }
 
-  }
+  }, []);
 
 
 
 
   useEffect(() => {
 
-    if (groupVideoCallState.device !== undefined) {
+    if (groupVideoConversationState.device !== undefined) {
 
-      createSendTransport();
+      createProducerTransport();
 
     }
 
 
-  }, [groupVideoCallState.device])
+
+  }, [groupVideoConversationState.device]);
 
 
 
 
-
-  const createSendTransport = useCallback(async () => {
+  const createProducerTransport = useCallback(async () => {
 
     try {
 
-      socketIo?.emit("createWebRtcTransport", { consumer: false }, ({ params }: any) => {
+      socketIo?.emit("createWebRtcTransport", { consumer: false }, async ({ params }: any) => {
 
+        const producerTransport = await groupVideoConversationState.device.createSendTransport(params);
 
-        const producerTransport: mediasoupTypes.Transport = groupVideoCallState.device.createSendTransport(params);
-
-
-        dispatch(setVideoCallState({ prop: "producerTransport", value: producerTransport }))
-
+        dispatch(setGroupConversationState({ prop: "producerTransport", value: producerTransport }));
 
         producerTransport.on("connect", async ({ dtlsParameters }: { dtlsParameters: mediasoupTypes.DtlsParameters }, callback: Function, errback: Function) => {
 
-          try {
 
-            await socketIo.emit("transport-connect", ({ dtlsParameters }));
+          await socketIo.emit("transport-connect", { dtlsParameters });
 
-            callback();
+          callback();
 
-          } catch (err) {
-
-            console.log(err);
-
-          }
-
-        }); /// transport connect event end
+        });
 
 
 
         producerTransport.on("produce", async (parameters: any, callback: Function, errback: Function) => {
 
-          try {
 
-            await socketIo.emit("transport-produce", ({
-              rtpParameters: parameters.rtpParameters,
-              kind: parameters.kind
-            }), ({ id, producersExist }: { id: string, producersExist: boolean }) => {
-
-              callback({ id });
-
-              console.log(producersExist, 'producersExist')
-
-              if (producersExist) getProducers()
+          await socketIo.emit("transport-produce", { kind: parameters.kind, rtpParameters: parameters.rtpParameters }, ({ id, producersExist }: any) => {
 
 
-            });
+            callback({ id });
+
+            if (producersExist) getProducers();
+
+          });
 
 
-          } catch (err) {
-
-            console.log(err);
-
-          }
-
-        }); /// transport produce event end
+        });
 
 
-
-      })
+      });
 
     } catch (err) {
 
@@ -282,7 +263,7 @@ const GroupVideoCallPage = () => {
 
     }
 
-  }, [groupVideoCallState.device]);
+  }, [groupVideoConversationState.device]);
 
 
 
@@ -292,63 +273,22 @@ const GroupVideoCallPage = () => {
 
   useEffect(() => {
 
-    if (groupVideoCallState.producerTransport !== undefined) {
+    if (groupVideoConversationState.producerTransport !== undefined) {
 
-      connectSendTransport();
+      connectProducerTransport();
 
     }
 
-  }, [groupVideoCallState.producerTransport]);
+
+  }, [groupVideoConversationState.producerTransport]);
 
 
-
-
-
-
-
-  const connectSendTransport = useCallback(async () => {
+  const connectProducerTransport = useCallback(async () => {
 
     try {
 
-
-
-      const audioProducer = await groupVideoCallState.producerTransport.produce(groupVideoCallState.audioParams);
-
-      const videoProducer = await groupVideoCallState.producerTransport.produce(groupVideoCallState.videoParams);
-
-
-
-
-
-      audioProducer.on('trackended', () => {
-        console.log('audio track ended')
-
-        // close audio track
-      });
-
-
-
-      audioProducer.on('transportclose', () => {
-        console.log('audio transport ended')
-
-        // close audio track
-      });
-
-
-
-      videoProducer.on('trackended', () => {
-        console.log('video track ended')
-
-        // close video track
-      });
-
-
-
-      videoProducer.on('transportclose', () => {
-        console.log('video transport ended')
-
-        // close video track
-      });
+      const videoProducer = await groupVideoConversationState.producerTransport.produce(groupVideoConversationState.videoParams);
+      const audioProducer = await groupVideoConversationState.producerTransport.produce(groupVideoConversationState.audioParams);
 
 
     } catch (err) {
@@ -357,57 +297,29 @@ const GroupVideoCallPage = () => {
 
     }
 
-  }, [groupVideoCallState.producerTransport]);
+  }, [groupVideoConversationState.producerTransport]);
 
 
 
-
-
-  const signalNewConsumerTransport = async (remoteProducerId: any) => {
-
-    console.log(remoteProducerId, 'remoteProdcuerId')
+  const getProducers = async () => {
 
     try {
 
-      if (groupVideoCallState.consumingTransports.includes(remoteProducerId)) return;
+      socketIo?.emit("getProducers", (producerList: any) => {
 
-      dispatch(setVideoCallState({ prop: "consumingTransports", value: remoteProducerId }));
+        producerList.forEach((producerId: string) => {
 
-      socketIo?.emit("createWebRtcTransport", { consumer: true }, ({ params }: any) => {
+          if (groupVideoConversationState.producerIds.includes(producerId)) {
 
-        try {
+            console.log('already exists', producerId)
 
+          } else {
 
-          const consumerTransport: mediasoupTypes.Transport = groupVideoCallState?.device?.createRecvTransport(params);
+            dispatch(setGroupConversationState({ prop: "producerIds", value: producerId }));
 
+          }
 
-
-          console.log(consumerTransport, 'consumerTransport');
-
-          dispatch(setVideoCallState({ prop: "consumerTransport", value: consumerTransport }));
-
-
-          consumerTransport?.on("connect", async ({ dtlsParameters }: { dtlsParameters: mediasoupTypes.DtlsParameters }, callback: Function, errback: Function) => {
-
-            await socketIo?.emit("transport-recv-connect", {
-              dtlsParameters,
-              serverConsumerTransportId: params.id
-
-            });
-
-            callback();
-
-          });
-
-
-
-          connectRecvTransport(consumerTransport, remoteProducerId, params.id)
-
-        } catch (err) {
-
-          console.log(err);
-
-        }
+        })
 
       });
 
@@ -418,6 +330,67 @@ const GroupVideoCallPage = () => {
     }
 
   }
+
+
+
+
+  useEffect(() => {
+
+    if (groupVideoConversationState.producerIds.length) {
+
+      groupVideoConversationState.producerIds.forEach((producerId: string) => {
+
+
+
+        signalNewConsumingTransport(producerId);
+
+      });
+
+    }
+
+
+  }, [groupVideoConversationState.producerIds]);
+
+
+
+  const signalNewConsumingTransport = useCallback(async (remoteProducerId: string) => {
+
+
+    try {
+
+      if (groupVideoConversationState.consumingTransports.includes(remoteProducerId)) return
+
+      dispatch(setGroupConversationState({ prop: "consumingTransports", value: remoteProducerId }));
+
+      await socketIo?.emit("createWebRtcTransport", { consumer: true }, async ({ params }: any) => {
+
+        const consumerTransport = groupVideoConversationState.device.createRecvTransport(params);
+
+        dispatch(setGroupConversationState({ prop: "consumerTransport", value: consumerTransport }));
+
+        consumerTransport.on("connect", async ({ dtlsParameters }: { dtlsParameters: mediasoupTypes.DtlsParameters }, callback: Function, errback: Function) => {
+
+          await socketIo.emit("transport-recv-connect", { dtlsParameters, serverConsumerTransportId: params.id });
+
+          callback();
+
+        });
+
+
+        connectRecvTransport(consumerTransport, remoteProducerId, params.id)
+
+      });
+
+
+  
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+  }, [groupVideoConversationState.producerIds]);
 
 
 
@@ -425,58 +398,28 @@ const GroupVideoCallPage = () => {
 
 
   const connectRecvTransport = async (consumerTransport: mediasoupTypes.Transport, remoteProducerId: string, serverConsumerTransportId: string) => {
-    console.log("consumerTransport", consumerTransport)
 
     try {
 
-      await socketIo?.emit("consume", {
-
-        rtpCapabilities: groupVideoCallState?.device?.rtpCapabilities,
-        remoteProducerId,
-        serverConsumerTransportId,
-
-      }, async ({ params }: any) => {
+      socketIo?.emit("consume", { rtpCapabilities: groupVideoConversationState.device.rtpCapabilities, remoteProducerId, serverConsumerTransportId }, async ({ params }: any) => {
 
         const consumer = await consumerTransport.consume({
-
           id: params.id,
           producerId: params.producerId,
           kind: params.kind,
-          rtpParameters: params.rtpParameters,
+          rtpParameters: params.rtpParameters
+        })
 
-        });
-
-
-        dispatch(setVideoCallState({
-          prop: "consumerTransports", value: [
-
-            ...groupVideoCallState.consumerTransports,
-            {
-
-              consumerTransport,
-              serverConsumerTransportId: params.id,
-              producerId: remoteProducerId,
-              consumer
-
-            }
-
-          ]
-        }))
-
-
-        const { track } = consumer;
-
-
-        dispatch(setVideoCallState({ prop: "streamTracks", value: track }))
+        const { track } = consumer
 
         socketIo.emit("consumer-resume", { serverConsumerId: params.serverConsumerId })
 
+        dispatch(setGroupConversationState({ prop: "streamTracks", value: track }))
 
 
-        console.log(track, 'track')
 
 
-      })
+      });
 
     } catch (err) {
 
@@ -488,54 +431,9 @@ const GroupVideoCallPage = () => {
 
 
 
-
-  const getProducers = async () => {
-
-    socketIo?.emit("getProducers", (producerIds: any) => {
-
-      console.log(producerIds, "producerIdsArray")
-
-      producerIds.forEach((producerId: string) => {
-
-        dispatch(setVideoCallState({ prop: "producerIds", value: producerId }));
-
-        ///signalNewConsumerTransport(producerId);
-
-      });
-
-    });
-
-  }
-
-
-
-
-
-  useEffect(() => {
-
-    if (groupVideoCallState.producerIds.length) {
-
-      groupVideoCallState.producerIds.forEach((producerId: any) => {
-
-        signalNewConsumerTransport(producerId)
-
-      });
-
-    }
-
-  }, [groupVideoCallState.producerIds])
-
-
-
-
-
-
-
-
-
   return (
 
-    <MeetingOptions>
+    <MeetingOptions >
 
 
       <div className='group-video-call-main-page'>
@@ -562,16 +460,17 @@ const GroupVideoCallPage = () => {
           </div>
 
 
-          <LocalStream />
+          <LocalStream stream={localStreamVideo} />
 
 
         </div> {/*streamAndReportRemoveMuteUserOptsContainer end*/}
 
 
+        <video ref={remoteStreamVideo} playsInline autoPlay style={{ width: "100%", height: "99.6%", objectFit: "fill" }} />
 
 
 
-        {groupVideoCallState.streamTracks.map((track: any) => (
+        {groupVideoConversationState.streamTracks.map((track: any) => (
 
           <div className='streamAndReportRemoveMuteUserOptsContainer'> {/*streamAndReportRemoveMuteUserOptsContainer start*/}
 
@@ -599,9 +498,9 @@ const GroupVideoCallPage = () => {
 
 
           </div>
-        ))} 
-          
-          {/*streamAndReportRemoveMuteUserOptsContainer end*/ }
+        ))}
+
+        {/*streamAndReportRemoveMuteUserOptsContainer end*/}
 
 
       </div>
