@@ -71,17 +71,14 @@ const mediaCodecs = [
     },
 ];
 let worker;
-let rooms = {};
-let rooms2 = new Map();
-let joinedUsers = {};
-let joinedUsers2 = new Map();
-;
-let transports = [];
-let transports2 = new Map();
-let consumers = [];
-let consumers2 = new Map();
-let producers = [];
-let producers2 = new Map();
+const activeRooms = new Map();
+const activeUsers = new Map();
+const roomProducers = new Map([]);
+const transports = new Map(); // transport identifier key will be transport id itself
+const producers = new Map(); // producer identifier key will be producer id itself
+const consumers = new Map(); // consumer identifier key will be consumer id itself
+const onlineUsersEmails = new Map();
+const sockets = new Map();
 const createWorker = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         worker = yield mediasoup.createWorker({
@@ -123,81 +120,129 @@ const io = new socket_io_1.Server(httpsServer, {
         origin: ["http://localhost:3000", "http://192.168.1.3:3000"]
     }
 });
-const sockets = new Map();
 io.on("connection", (socket) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(socket.id, "socketId");
     sockets.set(socket.id, socket);
+    activeUsers.set(socket.id, {
+        socket,
+        joinedRoomName: "",
+        producerTransportId: "",
+        consumerTransportId: ""
+    });
     socket.emit("connection-success", socket.id);
-    socket.on("joinRoom", (_a, callback_1) => __awaiter(void 0, [_a, callback_1], void 0, function* ({ roomName }, callback) {
-        const router = yield createRoom(roomName, socket.id);
-        joinedUsers[socket.id] = {
-            socket,
+    socket.on("createRoom", (_a, callback_1) => __awaiter(void 0, [_a, callback_1], void 0, function* ({ roomName }, callback) {
+        const router = yield (worker === null || worker === void 0 ? void 0 : worker.createRouter({ mediaCodecs }));
+        activeRooms.set(roomName, {
             router,
-            roomName,
-            transports: [],
-            producers: [],
-            consumers: [],
-            userDetails: {
-                name: "",
-                isAdmin: false
-            }
+            roomMembers: []
+        });
+        const userData = activeUsers.get(socket.id);
+        userData.router = router,
+            userData.joinedRoomName = roomName;
+        callback({ routerRtpCapabilities: router === null || router === void 0 ? void 0 : router.rtpCapabilities });
+    }));
+    socket.on("join-room", ({ roomName }, callback) => {
+        const roomData = activeRooms.get(roomName);
+        const router = roomData === null || roomData === void 0 ? void 0 : roomData.router;
+        const roomMembers = (roomData === null || roomData === void 0 ? void 0 : roomData.roomMembers) || [];
+        const updatedRoomData = {
+            router: router,
+            roomMembers: [...roomMembers, socket.id]
         };
-        const rtpCapabilities = router === null || router === void 0 ? void 0 : router.rtpCapabilities;
-        callback({ rtpCapabilities });
-    }));
+        activeRooms.set(roomName, updatedRoomData);
+        const userData = activeUsers.get(socket.id);
+        userData.router = router,
+            userData.joinedRoomName = roomName;
+        activeUsers.set(socket.id, userData);
+        callback({ routerRtpCapabilities: router === null || router === void 0 ? void 0 : router.rtpCapabilities });
+    });
     socket.on("createWebRtcTransport", (_b, callback_2) => __awaiter(void 0, [_b, callback_2], void 0, function* ({ consumer }, callback) {
-        try {
-            const roomName = joinedUsers[socket.id].roomName;
-            const router = rooms[roomName].router;
+        var _c, _d;
+        const roomName = (_c = activeUsers.get(socket.id)) === null || _c === void 0 ? void 0 : _c.joinedRoomName;
+        const router = (_d = activeRooms.get(roomName)) === null || _d === void 0 ? void 0 : _d.router;
+        if (consumer) {
             const transport = yield createWebrtcTransport(router, socket.id, callback);
-            addTransport(transport, socket.id, roomName, consumer);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }));
-    socket.on("transport-connect", (_c, callback_3) => __awaiter(void 0, [_c, callback_3], void 0, function* ({ dtlsParameters }, callback) {
-        const roomName = joinedUsers[socket.id].roomName;
-        const producerTransport = producers.find((producerData) => producerData.socketId === socket.id && !producerData.consumer && producerData.roomName === roomName);
-        yield producerTransport.transport.connect({ dtlsParameters });
-    }));
-    socket.on("transport-produce", (_d, callback_4) => __awaiter(void 0, [_d, callback_4], void 0, function* ({ kind, rtpParameters }, callback) {
-        const roomName = joinedUsers[socket.id].roomName;
-        const producerTransport = producers.find((producerData) => producerData.socketId === socket.id && !producerData.consumer && producerData.roomName === roomName);
-        const producer = yield producerTransport.transport.produce({ kind, rtpParameters });
-        addProducer(producer, socket.id, roomName);
-        informConsumers(producer.id, roomName, socket.id);
-    }));
-}));
-const createRoom = (roomName, socketId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e, _f;
-    try {
-        let router;
-        let joinedUsers;
-        if (rooms[roomName]) {
-            router = (_e = rooms[roomName]) === null || _e === void 0 ? void 0 : _e.router;
-            joinedUsers = (_f = rooms[roomName]) === null || _f === void 0 ? void 0 : _f.joinedUsers;
+            addConsumerTransport(transport, roomName, socket.id);
         }
         else {
-            router = yield (worker === null || worker === void 0 ? void 0 : worker.createRouter({ mediaCodecs }));
+            const transport = yield createWebrtcTransport(router, socket.id, callback);
+            addProducerTransport(transport, roomName, socket.id);
         }
-        rooms[roomName] = {
-            router: router,
-            joinedUsers: joinedUsers
-        };
-        return router;
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
+    }));
+    socket.on("getProducers", (callback) => {
+        var _a;
+        const roomName = (_a = activeUsers.get(socket.id)) === null || _a === void 0 ? void 0 : _a.joinedRoomName;
+        const roomsMembers = roomProducers.get(roomName);
+        console.log(roomsMembers, 'rooMmebers');
+        let producersList = [];
+        roomsMembers.forEach((producerData) => {
+            if (producerData.socketId !== socket.id) {
+                producersList = [...producersList, producerData.producerId];
+            }
+        });
+        callback({ producersList });
+    });
+    socket.on("transport-connect", (_e) => __awaiter(void 0, [_e], void 0, function* ({ dtlsParameters, serverProducerTransportId }) {
+        const producerTransport = transports.get(serverProducerTransportId).transport;
+        yield producerTransport.connect({ dtlsParameters });
+    }));
+    socket.on("transport-produce", (_f, callback_3) => __awaiter(void 0, [_f, callback_3], void 0, function* ({ kind, rtpParameters, serverProducerTransportId }, callback) {
+        var _g, _h;
+        const roomName = (_g = activeUsers.get(socket.id)) === null || _g === void 0 ? void 0 : _g.joinedRoomName;
+        const producerTransport = (_h = transports.get(serverProducerTransportId)) === null || _h === void 0 ? void 0 : _h.transport;
+        const producer = yield producerTransport.produce({ kind, rtpParameters });
+        const memberOfRooms = roomProducers.get(roomName);
+        addProducer(producer, roomName, socket.id);
+        informConsumers(producer, socket.id, roomName);
+        callback({ id: producer.id, producersExist: (memberOfRooms === null || memberOfRooms === void 0 ? void 0 : memberOfRooms.length) > 1 ? true : false });
+    }));
+    socket.on("transport-recv-connect", (_j) => __awaiter(void 0, [_j], void 0, function* ({ dtlsParameters, serverConsumerTransportId }) {
+        var _k, _l;
+        const roomName = (_k = activeUsers.get(socket.id)) === null || _k === void 0 ? void 0 : _k.joinedRoomName;
+        const consumerTransport = (_l = transports.get(serverConsumerTransportId)) === null || _l === void 0 ? void 0 : _l.transport;
+        yield consumerTransport.connect({ dtlsParameters });
+    }));
+    socket.on("consume", (_m, callback_4) => __awaiter(void 0, [_m, callback_4], void 0, function* ({ rtpCapabilities, remoteProducerId, serverConsumerTransportId }, callback) {
+        var _o;
+        const roomName = (_o = activeUsers.get(socket.id)) === null || _o === void 0 ? void 0 : _o.joinedRoomName;
+        const router = activeRooms.get(roomName).router;
+        if (router.canConsume({
+            rtpCapabilities,
+            producerId: remoteProducerId,
+            paused: true
+        })) {
+            const consumerTransport = transports.get(serverConsumerTransportId).transport;
+            const consumer = yield consumerTransport.consume({
+                rtpCapabilities,
+                producerId: remoteProducerId,
+                paused: true
+            });
+            addConsumer(consumer);
+            callback({
+                params: {
+                    id: consumer.id,
+                    rtpParameters: consumer.rtpParameters,
+                    producerId: remoteProducerId,
+                    kind: consumer.kind,
+                }
+            });
+        }
+    }));
+    socket.on("consumer-resume", ({ consumerId }) => {
+        const consumer = consumers.get(consumerId);
+        consumer.resume();
+    });
+    socket.on("disconnect", () => {
+        activeUsers.delete(socket.id);
+    });
+}));
 const createWebrtcTransport = (router, socketId, callback) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const webRtcTransportOptions = {
             listenInfos: [{
                     protocal: 'udp',
                     ip: "0.0.0.0",
-                    announcedAddress: "192.168.207.177"
+                    announcedAddress: "192.168.1.10"
                 }],
             enableUdp: true,
             enableTcp: true,
@@ -219,47 +264,71 @@ const createWebrtcTransport = (router, socketId, callback) => __awaiter(void 0, 
         console.log(err);
     }
 });
-const addTransport = (transport, socketId, roomName, consumer) => __awaiter(void 0, void 0, void 0, function* () {
+const addConsumerTransport = (transport, roomName, socketId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        transports = [
-            ...transports,
-            { socketId, transport, roomName, consumer }
-        ];
-        joinedUsers[socketId] = Object.assign(Object.assign({}, joinedUsers[socketId]), { transports: [
-                ...joinedUsers[socketId].transports,
-                transport.id
-            ] });
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
-const addProducer = (producer, socketId, roomName) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        producers = [
-            ...producers,
-            { socketId, producer, roomName }
-        ];
-        joinedUsers[socketId] = Object.assign(Object.assign({}, joinedUsers[socketId]), { producers: [...joinedUsers[socketId].producers, producer.id] });
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
-const addConsumer = (consumer, roomName, socketId) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-    }
-    catch (err) {
-        console.log(err);
-    }
-});
-const informConsumers = (id, roomName, socketId) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const roomMembers = producers.filter((producerData) => producerData.socketId !== socketId && producerData.roomName === roomName);
-        roomMembers.forEach((roomMemberData) => {
-            const producerSocket = joinedUsers[roomMemberData.socketId].socket;
-            producerSocket.emit("new-producer", { producerId: id });
+        transports.set(transport.id, {
+            transport,
+            socketId,
+            roomName
         });
+        const userData = activeUsers.get(socketId);
+        userData.consumerTransportId = transport.id;
+        activeUsers.set(socketId, userData);
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+const addProducerTransport = (transport, roomName, socketId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        transports.set(transport.id, {
+            transport,
+            socketId,
+            roomName
+        });
+        const userData = activeUsers.get(socketId);
+        userData.producerTransportId = transport.id;
+        activeUsers.set(socketId, userData);
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+const addProducer = (producer, roomName, socketId) => {
+    try {
+        producers.set(producer.id, {
+            roomName,
+            socketId
+        });
+        if (roomProducers.has(roomName)) {
+            const producersOfRoom = roomProducers.get(roomName);
+            roomProducers.set(roomName, [...producersOfRoom, { producerId: producer.id, socketId }]);
+        }
+        else {
+            roomProducers.set(roomName, [{ producerId: producer.id, socketId, }]);
+        }
+    }
+    catch (err) {
+        console.log(err);
+    }
+};
+const informConsumers = (producer, socketId, roomName) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const roomMembers = roomProducers.get(roomName);
+        roomMembers.forEach((roomMember) => {
+            if (roomMember.socketId !== socketId) {
+                const producerSocket = activeUsers.get(socketId).socket;
+                producerSocket.emit('new-producer', { producerId: producer.id });
+            }
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+const addConsumer = (consumer) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        consumers.set(consumer.id, consumer);
     }
     catch (err) {
         console.log(err);

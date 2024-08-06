@@ -18,7 +18,7 @@ import cors from "cors";
 import fs from "fs"
 
 import { Server, Socket } from "socket.io"
-import { rtpHeaderExtensionUriFromFbs } from "mediasoup/node/lib/RtpParameters";
+import { RtpCapabilities, rtpHeaderExtensionUriFromFbs } from "mediasoup/node/lib/RtpParameters";
 import { DtlsParameters } from "mediasoup/node/lib/fbs/web-rtc-transport";
 import { RtpParameters } from "mediasoup/node/lib/fbs/rtp-parameters";
 
@@ -81,38 +81,31 @@ const mediaCodecs: mediasoupTypes.RtpCodecCapability[] = [
 
 let worker: mediasoupTypes.Worker | undefined;
 
-let rooms: any = {};
+const activeRooms = new Map();
 
-let rooms2: any = new Map();
+const activeUsers = new Map();
 
+const roomProducers = new Map([]);
 
+const transports = new Map(); // transport identifier key will be transport id itself
 
+const producers = new Map(); // producer identifier key will be producer id itself
 
-let joinedUsers: any = {};
-
-let joinedUsers2: any = new Map();;
-
-
-
-
-let transports: any = [];
-
-let transports2: any = new Map();
+const consumers = new Map(); // consumer identifier key will be consumer id itself
 
 
 
 
 
-let consumers: any = [];
-
-let consumers2: any = new Map();
 
 
+const onlineUsersEmails: any = new Map();
 
 
-let producers: any = [];
+const sockets = new Map();
 
-let producers2: any = new Map();
+
+
 
 
 
@@ -212,9 +205,6 @@ const io = new Server(httpsServer, {
 
 
 
-const sockets = new Map();
-
-
 
 io.on("connection", async (socket: Socket) => {
 
@@ -224,106 +214,114 @@ io.on("connection", async (socket: Socket) => {
     sockets.set(socket.id, socket);
 
 
+    activeUsers.set(socket.id, {
+
+        socket,
+        joinedRoomName: "",
+        producerTransportId: "",
+        consumerTransportId: "",
+        producerId: "",
+        consumerId: "",
+
+    });
+
 
     socket.emit("connection-success", socket.id);
 
 
+    socket.on("createRoom", async ({ roomName }: { roomName: string }, callback: Function) => {
 
-    socket.on("joinRoom", async ({ roomName }: { roomName: string }, callback: Function) => {
+        const router: mediasoupTypes.Router | undefined = await worker?.createRouter({ mediaCodecs });
 
-        const router = await createRoom(roomName, socket.id);
 
-        joinedUsers[socket.id] = {
 
-            socket,
+        activeRooms.set(roomName, {
+
             router,
-            roomName,
-            transports: [],
-            producers: [],
-            consumers: [],
-            userDetails: {
+            roomMembers: [socket.id]
 
-                name: "",
-                isAdmin: false
-
-            }
-
-        }
+        });
 
 
-        const rtpCapabilities: mediasoupTypes.RtpCapabilities | undefined = router?.rtpCapabilities
+        const userData = activeUsers.get(socket.id);
 
-        callback({ rtpCapabilities });
+        userData.router = router,
 
+            userData.joinedRoomName = roomName
+
+        callback({ routerRtpCapabilities: router?.rtpCapabilities });
 
     });
 
+
+
+
+
+    socket.on("join-room", ({ roomName }: { roomName: string }, callback: Function) => {
+
+        const roomData = activeRooms.get(roomName);
+
+        const router: mediasoupTypes.Router = roomData?.router
+
+        const roomMembers: string[] = roomData?.roomMembers || []
+
+
+
+
+        roomData.router = router,
+            roomData.roomMembers = [roomMembers, socket.id]
+
+
+
+
+        activeRooms.set(roomName, roomData);
+
+
+        const userData = activeUsers.get(socket.id);
+
+
+        userData.router = router,
+
+
+            userData.joinedRoomName = roomName
+
+
+        activeUsers.set(socket.id, userData);
+
+
+        callback({ routerRtpCapabilities: roomData.router?.rtpCapabilities });
+
+
+    });
 
 
     socket.on("createWebRtcTransport", async ({ consumer }: { consumer: boolean }, callback: Function) => {
 
-        try {
 
-            const roomName = joinedUsers[socket.id].roomName;
 
-            const router = rooms[roomName].router;
+        const roomName: string = activeUsers.get(socket.id)?.joinedRoomName;
 
-            const transport = await createWebrtcTransport(router, socket.id, callback);
 
-            addTransport(transport, socket.id, roomName, consumer);
+        const router: mediasoupTypes.Router = activeRooms.get(roomName)?.router;
 
-        } catch (err) {
+        if (consumer) {
 
-            console.log(err);
+            const transport: mediasoupTypes.Transport = await createWebrtcTransport(router, socket.id, callback);
+
+
+
+            addConsumerTransport(transport, roomName, socket.id);
+
+        } else {
+
+            const transport: mediasoupTypes.Transport = await createWebrtcTransport(router, socket.id, callback);
+
+
+            addProducerTransport(transport, roomName, socket.id);
 
         }
 
-    });
 
-
-    socket.on("transport-connect", async ({ dtlsParameters }: { dtlsParameters: mediasoupTypes.DtlsParameters }, callback: Function) => {
-
-        const roomName = joinedUsers[socket.id].roomName
-
-        const producerTransport = transports.find((transportData: any) => transportData.socketId === socket.id && !transportData.consumer && transportData.roomName === roomName);
-
-
-        await producerTransport.transport.connect({ dtlsParameters });
-
-    });
-
-
-
-
-
-    socket.on("transport-produce", async ({ kind, rtpParameters }: { kind: mediasoupTypes.MediaKind, rtpParameters: mediasoupTypes.RtpParameters }, callback: Function) => {
-
-        const roomName = joinedUsers[socket.id].roomName;
-
-        const producerTransport = transports.find((transportData: any) => transportData.socketId === socket.id && !transportData.consumer && transportData.roomName === roomName);
-
-        const producer = await producerTransport.transport.produce({ kind, rtpParameters });
-
-        addProducer(producer, socket.id, roomName);
-
-        informConsumers(producer.id, roomName, socket.id);
-
-        callback({ id: producer.id, producersExist: producers.length > 1 ? true : false })
-
-    });
-
-
-
-
-
-    socket.on("transport-recv-connect", async ({ dtlsParameters, serverConsumerTransportId }, callback: Function) => {
-
-        const roomName = joinedUsers[socket.id].roomName
-
-
-        const consumerTransport = transports.find((transportData: any) => transportData.consumer == true && transportData.transport.id == serverConsumerTransportId).transport;
-
-        await consumerTransport.connect({ dtlsParameters });
 
     });
 
@@ -332,131 +330,185 @@ io.on("connection", async (socket: Socket) => {
 
     socket.on("getProducers", (callback: Function) => {
 
-        const roomName = joinedUsers[socket.id]?.roomName;
+        const roomName = activeUsers.get(socket.id)?.joinedRoomName
 
-        let producerList: any = []
-        producers.forEach((producerData: any) => {
-            if (producerData.socketId !== socket.id && producerData.roomName === roomName) {
-                producerList = [...producerList, producerData.producer.id]
+        const roomsMembers: any = roomProducers.get(roomName);
+
+        let producersList: any = []
+
+        roomsMembers.forEach((producerData: any) => {
+
+            if (producerData.socketId !== socket.id) {
+
+                producersList = [...producersList, producerData.producerId];
+
             }
-        })
 
-        // return the producer list back to the client
+        });
 
-        callback(producerList)
+        callback({ producersList });
 
     });
 
 
 
 
-    socket.on("consume", async ({ rtpCapabilities, remoteProducerId, serverConsumerTransportId }, callback: Function) => {
 
-        try {
+    socket.on("transport-connect", async ({ dtlsParameters, serverProducerTransportId }: any) => {
 
-            const roomName = joinedUsers[socket.id]?.roomName
+        const producerTransport = transports.get(serverProducerTransportId).transport;
 
-            const router = rooms[roomName]?.router
+        await producerTransport.connect({ dtlsParameters });
 
-            if (router.canConsume({
+    });
 
-                producerId: remoteProducerId,
+
+
+
+
+    socket.on("transport-produce", async ({ kind, rtpParameters, serverProducerTransportId }: any, callback: Function) => {
+
+        const roomName = activeUsers.get(socket.id)?.joinedRoomName
+
+        const producerTransport = transports.get(serverProducerTransportId)?.transport;
+
+        const producer = await producerTransport.produce({ kind, rtpParameters });
+
+        const memberOfRooms: any[] | any = roomProducers.get(roomName);
+
+        const userData = activeUsers.get(socket.id);
+
+        userData.producerId = producer.id,
+
+            activeUsers.set(socket.id, userData);
+
+
+        addProducer(producer, roomName, socket.id);
+
+        informConsumers(producer, socket.id, roomName);
+
+        callback({ id: producer.id, producersExist: memberOfRooms?.length > 1 ? true : false });
+
+    });
+
+
+
+
+
+    socket.on("transport-recv-connect", async ({ dtlsParameters, serverConsumerTransportId }: any) => {
+
+        const roomName = activeUsers.get(socket.id)?.joinedRoomName
+
+        const consumerTransport = transports.get(serverConsumerTransportId)?.transport;
+
+        await consumerTransport.connect({ dtlsParameters });
+
+    });
+
+
+
+
+    socket.on("consume", async ({ rtpCapabilities, remoteProducerId, serverConsumerTransportId }: any, callback: Function) => {
+
+        const roomName = activeUsers.get(socket.id)?.joinedRoomName;
+
+        const router = activeRooms.get(roomName).router;
+
+        if (router.canConsume({
+
+            rtpCapabilities,
+            producerId: remoteProducerId,
+            paused: true
+
+        })) {
+
+            const consumerTransport = transports.get(serverConsumerTransportId).transport
+
+            const consumer = await consumerTransport.consume({
+
                 rtpCapabilities,
+                producerId: remoteProducerId,
                 paused: true
 
+            });
 
-            })) {
+            const userData = activeUsers.get(socket.id);
 
-                const consumerTransport = transports.find((transportData: any) => transportData.consumer && transportData.transport.id === serverConsumerTransportId).transport;
+            userData.consumerId = consumer.id,
 
-                const consumer: any = await consumerTransport.consume({
+                activeUsers.set(socket.id, userData);
 
+
+
+            addConsumer(consumer);
+
+
+            callback({
+                params: {
+
+                    id: consumer.id,
+                    rtpParameters: consumer.rtpParameters,
                     producerId: remoteProducerId,
-                    rtpCapabilities,
-                    paused: true
-                });
+                    kind: consumer.kind,
 
+                }
+            })
 
-                addConsumer(consumer, roomName, socket.id);
-
-
-                callback({
-
-                    params: {
-
-                        id: consumer.id,
-                        producerId: remoteProducerId,
-                        kind: consumer.kind,
-                        rtpParameters: consumer.rtpParameters,
-                        serverConsumerId: consumer.id,
-                    }
-
-                });
-            }
-
-
-        } catch (err) {
-
-            console.log(err);
 
         }
 
-    })
+    });
 
 
 
+    socket.on("consumer-resume", ({ consumerId }: any) => {
 
-    socket.on('consumer-resume', async ({ serverConsumerId }) => {
+        const consumer = consumers.get(consumerId);
 
-        const consumer = consumers.find((consumerData: any) => consumerData.consumer?.id == serverConsumerId).consumer;
-
-        await consumer.resume();
-
+        consumer.resume()
 
     });
+
+
+
+    socket.on("producer-pause", () => {
+
+        const producerId: string = activeUsers.get(socket.id).producerId
+
+
+
+        const producer = producers.get(producerId).producer;
+
+        producer.pause()
+
+    });
+
+
+    socket.on("producer-resume", () => {
+
+        const producerId: string = activeUsers.get(socket.id).producerId
+
+
+
+        const producer = producers.get(producerId).producer;
+
+        producer.resume()
+
+    });
+
+
+
+
+
+    socket.on("disconnect", () => {
+
+        activeUsers.delete(socket.id);
+
+    });
+
 
 });
 
-
-
-
-
-const createRoom = async (roomName: string, socketId: string) => {
-
-    try {
-
-        let router: mediasoupTypes.Router | undefined
-
-        let joinedUsers: any[] | undefined;
-
-        if (rooms[roomName]) {
-
-            router = rooms[roomName]?.router
-            joinedUsers = rooms[roomName]?.joinedUsers
-
-        } else {
-
-            router = await worker?.createRouter({ mediaCodecs });
-
-        }
-
-
-        rooms[roomName] = {
-
-            router: router,
-            joinedUsers: joinedUsers
-
-        }
-
-        return router
-
-    } catch (err) {
-
-        console.log(err);
-
-    }
-
-}
 
 
 
@@ -465,13 +517,14 @@ const createWebrtcTransport = async (router: mediasoupTypes.Router, socketId: st
 
     try {
 
+
         const webRtcTransportOptions: any = {
 
             listenInfos: [{
 
                 protocal: 'udp',
                 ip: "0.0.0.0",
-                announcedAddress: "192.168.1.2"
+                announcedAddress: "192.168.1.6"
 
             }],
 
@@ -484,7 +537,6 @@ const createWebrtcTransport = async (router: mediasoupTypes.Router, socketId: st
 
 
         const transport: mediasoupTypes.Transport | any = await router?.createWebRtcTransport(webRtcTransportOptions);
-
 
 
 
@@ -514,37 +566,94 @@ const createWebrtcTransport = async (router: mediasoupTypes.Router, socketId: st
 
 
 
-
-
-
-
-
-const addTransport = async (transport: mediasoupTypes.Transport, socketId: string, roomName: string, consumer: boolean) => {
+const addConsumerTransport = async (transport: mediasoupTypes.Transport, roomName: string, socketId: string) => {
 
     try {
 
-        transports = [
+        transports.set(transport.id, {
 
-            ...transports,
-            { socketId, transport, roomName, consumer }
+            transport,
+            socketId,
+            roomName
+
+        });
 
 
-        ]
+        const userData = activeUsers.get(socketId);
 
-        joinedUsers[socketId] = {
+        userData.consumerTransportId = transport.id
 
-            ...joinedUsers[socketId],
-            transports: [
+        activeUsers.set(socketId, userData);
 
-                ...joinedUsers[socketId].transports,
-                transport.id
 
-            ]
+    } catch (err) {
 
+        console.log(err);
+
+    }
+
+}
+
+
+
+
+const addProducerTransport = async (transport: mediasoupTypes.Transport, roomName: string, socketId: string) => {
+
+    try {
+
+        transports.set(transport.id, {
+
+            transport,
+            socketId,
+            roomName
+
+        });
+
+
+        const userData = activeUsers.get(socketId);
+
+        userData.producerTransportId = transport.id
+
+        activeUsers.set(socketId, userData);
+
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
+
+}
+
+
+
+const addProducer = (producer: mediasoupTypes.Producer, roomName: string, socketId: string) => {
+
+    try {
+
+
+        producers.set(producer.id, {
+
+            roomName,
+            socketId,
+            producer
+
+        });
+
+
+
+        if (roomProducers.has(roomName)) {
+
+            const producersOfRoom: any = roomProducers.get(roomName);
+
+            roomProducers.set(roomName, [...producersOfRoom, { producerId: producer.id, socketId }])
+
+        } else {
+
+            roomProducers.set(roomName, [{ producerId: producer.id, socketId, }]);
 
         }
 
-
     } catch (err) {
 
         console.log(err);
@@ -556,26 +665,23 @@ const addTransport = async (transport: mediasoupTypes.Transport, socketId: strin
 
 
 
-const addProducer = async (producer: mediasoupTypes.Producer, socketId: string, roomName: string,) => {
+const informConsumers = async (producer: mediasoupTypes.Producer, socketId: string, roomName: string) => {
 
     try {
 
-        producers = [
+        const roomMembers: any = roomProducers.get(roomName);
 
-            ...producers,
-            { socketId, producer, roomName }
+        roomMembers.forEach((roomMember: any) => {
 
-        ];
+            if (roomMember.socketId !== socketId) {
 
+                const producerSocket = activeUsers.get(roomMember.socketId).socket;
 
+                producerSocket.emit('new-producer', { producerId: producer.id })
 
+            }
 
-        joinedUsers[socketId] = {
-
-            ...joinedUsers[socketId],
-            producers: [...joinedUsers[socketId].producers, producer.id]
-
-        }
+        });
 
 
     } catch (err) {
@@ -589,26 +695,11 @@ const addProducer = async (producer: mediasoupTypes.Producer, socketId: string, 
 
 
 
-const addConsumer = async (consumer: mediasoupTypes.Consumer, roomName: string, socketId: string,) => {
+const addConsumer = async (consumer: mediasoupTypes.Consumer) => {
 
     try {
 
-        consumers = [
-
-            ...consumers,
-            { socketId, consumer, roomName }
-
-        ]
-
-
-        joinedUsers[socketId] = {
-
-            ...joinedUsers[socketId],
-            consumers: [...joinedUsers[socketId].consumers, consumer.id]
-
-        }
-
-
+        consumers.set(consumer.id, consumer)
 
     } catch (err) {
 
@@ -619,30 +710,6 @@ const addConsumer = async (consumer: mediasoupTypes.Consumer, roomName: string, 
 }
 
 
-
-
-
-const informConsumers = async (id: string, roomName: string, socketId: string) => {
-
-    try {
-
-        const roomMembers = producers.filter((producerData: any) => producerData.socketId !== socketId && producerData.roomName === roomName)
-
-        roomMembers.forEach((roomMemberData: any) => {
-
-            const producerSocket = joinedUsers[roomMemberData.socketId].socket
-
-            producerSocket.emit("new-producer", { producerId: id });
-
-        })
-
-    } catch (err) {
-
-        console.log(err);
-
-    }
-
-}
 
 
 
@@ -653,14 +720,6 @@ httpsServer.listen(4000, () => {
     console.log(4000, `listening on this port ${4000}`);
 
 });
-
-
-
-
-
-
-
-
 
 
 

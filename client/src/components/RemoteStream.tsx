@@ -64,7 +64,6 @@ const RemoteStream = (stream: any) => {
 
     useEffect(() => {
 
-        console.log(stream, 'streamstreamstrean')
 
         remoteStreamVideo.current.srcObject = new MediaStream([stream.track])
 
